@@ -3,11 +3,8 @@ import { useForm } from 'react-hook-form';
 import '../../api/especialidadesMedicas';
 import { Doctors } from '../../api/doctors';
 const { validate } = require('rut.js');
-import { FieldOptions } from './FieldOptions'
 
 export const Formulario = ({createDoctor}) => {
-    console.log(especialidadesMedicas);
-
     const [doctor, updateDoctor] = useState({
         names: '',
         father_lastname: '',
@@ -25,10 +22,10 @@ export const Formulario = ({createDoctor}) => {
 
     const { names, father_lastname, mother_lastname, rut, medic_field} = doctor;
 
-    const { register, handleSubmit, errors } = useForm(); 
+    const { register, handleSubmit, errors, setError } = useForm(); 
     const onSubmit = data => {
         if (!validate (data.rut) ) {
-            alert('Rut error');
+            setError("rut", 'notMatch',"Rut Incorrecto")
             return
         }
         data.id = Math.round(Math.random()*10);
@@ -61,6 +58,7 @@ export const Formulario = ({createDoctor}) => {
                         <span className="icon is-small is-left">
                             <i className="fas fa-user"></i>
                         </span>
+                        <p className="help is-danger">{errors.names && errors.names.message}</p>
                     </div>
                 </div>
                 <div className="field">
@@ -111,6 +109,7 @@ export const Formulario = ({createDoctor}) => {
                         <span className="icon is-small is-left">
                             <i className="fas fa-user"></i>
                         </span>
+                        <p className="help is-danger">{errors.rut && errors.rut.message}</p>
                         
                     </div>
                 </div>
@@ -122,11 +121,14 @@ export const Formulario = ({createDoctor}) => {
                         <div className="select">
                         <select
                             name="medic_field"
+                            ref={register({ required: true })}
                             onChange={updateState}
                             value={medic_field}
                         >
-                            {especialidadesMedicas.map(field=>{
-                                <option value="">asdas</option>
+                            {especialidadesMedicas.map((field, i)=>{
+                                return(
+                                    <option  key={i} value={field.nombre}>{field.nombre}</option>
+                                )
                             })}
                         </select>
                         </div>

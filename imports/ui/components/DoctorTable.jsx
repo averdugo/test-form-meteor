@@ -1,12 +1,8 @@
 import React, {Fragment, useState} from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Doctors } from '../../api/doctors'
-import { DoctorRow } from './DoctorRow';
 
 export const DoctorTable = ({doctors}) => {
-     console.log(doctors);
-     
-
     return (
         <Fragment>
             <h2 className="title">Lista de Doctores</h2>
@@ -20,11 +16,15 @@ export const DoctorTable = ({doctors}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {doctors.map(d=>{
-                        <DoctorRow 
-                            key={d.id}
-                            doctor={d}
-                        />
+                    {doctors.map((d,i)=>{
+                        return (
+                            <tr key={i}>
+                                <th>{d.names}</th>
+                                <th>{d.father_lastname} {d.mother_lastname}</th>
+                                <td>{d.rut}</td>
+                                <td>{d.medic_field}</td>
+                            </tr>
+                        )
                     })}
                 </tbody>
             </table>

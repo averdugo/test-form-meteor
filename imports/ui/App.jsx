@@ -1,15 +1,11 @@
 import React, {Fragment, useState} from 'react';
 import { Formulario } from './components/Formulario';
 import { DoctorTable } from './components/DoctorTable';
-import { DoctorRow } from './components/DoctorRow';
+import { Doctors } from '../api/doctors';
 
-import { Doctors } from '../api/doctors'
-import { withTracker } from 'meteor/react-meteor-data';
 
-export const App = () => {
-	
-	const mongoDoctors = Doctors.find({}).fetch()
 
+export const App = ({mongoDoctors}) => {
 	const [doctors, saveDoctor] = useState(mongoDoctors)
 
 	const createDoctor = doctor => {
@@ -18,8 +14,8 @@ export const App = () => {
 			doctor
 		]);
 		Doctors.insert(doctor);
-		console.log(Doctors.find({}).fetch());
 	}
+	
 
 	return	(
 		<Fragment>
@@ -40,7 +36,7 @@ export const App = () => {
 						</div>
 						<div className="column">
 							<DoctorTable
-								doctors = {doctors}
+								doctors = {mongoDoctors}
 							/>
 						</div>
 					</div>
